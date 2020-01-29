@@ -1,16 +1,12 @@
-import json  
+import json
 import urllib.request
+from jsonpath_ng.ext import parse
 
 uh = urllib.request.urlopen("http://dummy.restapiexample.com/api/v1/employees")
 parsed_string = uh.read()
-js = json.loads(parsed_string.decode("utf-8"))
+json_data = json.loads(parsed_string.decode("utf-8"))
 
-i = 0
-dic1 = {}
-while i < len(js["data"]):
-    dic1.update({js["data"][i]["employee_name"] : js["data"][i]["employee_salary"]})
-    i = i +1
-print('Doris Wilder salary is', dic1["Doris Wilder"])
+jsonpath_expression = parse('$.data[?(@.employee_name=="Doris Wilder")].employee_salary')
 
-
-
+for match in jsonpath_expression.find(json_data):
+    print('Doris Wilder salary is', match.value)
