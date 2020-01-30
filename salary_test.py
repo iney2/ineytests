@@ -10,3 +10,7 @@ jsonpath_expression = parse('$.data[?(@.employee_name=="Doris Wilder")].employee
 
 for match in jsonpath_expression.find(json_data):
     print('Doris Wilder salary is', match.value)
+    json_salary = match.value
+
+def test_salary():
+    assert json_salary == '85600'
